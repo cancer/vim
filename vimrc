@@ -3,7 +3,7 @@
 " An example for a Japanese version vimrc file.
 " 日本語版のデフォルト設定ファイル(vimrc) - Vim7用試作
 "
-" Last Change: 27-Dec-2011.
+" Last Change: 10-Jan-2012.
 " Maintainer:  MURAOKA Taro <koron.kaoriya@gmail.com>
 "
 " 解説:
@@ -281,7 +281,7 @@ endif
 
 "---------------------------------------------------------------------------
 " PATHの追加
-let $FTPLUGIN = $VIM . '\vimfiles\after\ftplugin'
+let $FTPLUGIN = $VIMRUNTIME . '\after\ftplugin'
 
 "---------------------------------------------------------------------------
 " プラグイン
@@ -301,25 +301,26 @@ nnoremap gk k
 nnoremap <C-Up> 5k
 nnoremap <C-Down> 5j
 
-noremap <S-Up> v<Up>
-noremap <S-Down> v<Down>
-noremap <S-Left> v<Left>
-noremap <S-Right> v<Right>
+"noremap <S-Up> v<Up>
+"noremap <S-Down> v<Down>
+"noremap <S-Left> v<Left>
+"noremap <S-Right> v<Right>
 
-vnoremap <S-Up> <Up>
-vnoremap <S-Down> <Down>
-vnoremap <Up> v<Up>
-vnoremap <Down> v<Down>
-vnoremap <S-Left> <Left>
-vnoremap <S-Right> <Right>
-vnoremap <Left> v<Left>
-vnoremap <Right> v<Right>
+"vnoremap <S-Up> <Up>
+"vnoremap <S-Down> <Down>
+"vnoremap <Up> v<Up>
+"vnoremap <Down> v<Down>
+"vnoremap <S-Left> <Left>
+"vnoremap <S-Right> <Right>
+"vnoremap <Left> v<Left>
+"vnoremap <Right> v<Right>
 
 "nnoremap <tab> f=2l
 "nnoremap <s-tab> 2F=2l
 
 " Save the current buffer and execute the Tortoise SVN interface's diff program
-"nnoremap <silent> <leader>cc :w<CR>:silent !"C:\Progra~1\TortoiseSVN\bin\TortoiseProc.exe /command:commit  /path:"%" /notempfile /closeonend:1"<CR>
+"noremap <silent> <leader>cc :w<CR>:execute "C:\Progra~1\TortoiseSVN\bin\TortoiseProc.exe /command:commit  /path:"%" /notempfile /closeonend:1"<CR>
+"noremap <silent> <leader>cl :w<CR>:execute "C:\Progra~1\TortoiseSVN\bin\TortoiseProc.exe /command:log  /path:"%" /notempfile /closeonend:1"<CR>
 
 " open new tab
 nnoremap <c-n> :<c-u>tabnew<cr>
@@ -355,22 +356,21 @@ set whichwrap=b,s,h,l,<,>,[,]
 
 "---------------------------------------------------------------------------
 " UI関連
-" ウィンドウを最大化して起動
-if has("gui_running")
-  if has('mac')
-    set fuoptions=maxvert,maxhorz
-    au GUIEnter * set fullscreen
-  elseif has('win32')
-    au GUIEnter * simalt ~X
-  endif
-endif
-
 "入力モード時、ステータスラインのカラーを変更
 augroup InsertHook
 autocmd!
 autocmd InsertEnter * highlight StatusLine guifg=#ccdc90 guibg=#2E4340
 autocmd InsertLeave * highlight StatusLine guifg=#2E4340 guibg=#ccdc90
 augroup END
+
+"---------------------------------------------------------------------------
+" ファイル設定関連
+
+" filetype を検出
+filetype on
+
+" fileencode を設定
+set fileencoding=utf-8
 
 "---------------------------------------------------------------------------
 " vimrcを良い感じに開く
@@ -390,7 +390,7 @@ endfunction
 command! OpenMyVimrc call OpenFile(s:vimrcbody)
 command! OpenMyGVimrc call OpenFile(s:gvimrcbody)
 nnoremap ,, :<C-u>OpenMyVimrc<CR>
-nnoremap ,<Tab> :<C-u>OpenMyGVimr<CR>
+nnoremap ,<Tab> :<C-u>OpenMyGVimrc<CR>
 
 " F5でリロード
 function! SourceIfExists(file)
@@ -398,18 +398,46 @@ function! SourceIfExists(file)
     execute 'source ' . a:file
   endif
   echo 'Reloaded vimrc and gvimrc and ' . a:file . '.'
+  FullScreen
 endfunction
 nnoremap <F5> <Esc>:<C-u>source $MYVIMRC<CR> :source $MYGVIMRC<CR> :call SourceIfExists($FTPLUGIN .'\'. &filetype . '.vim')<CR>
 
-
-
 "---------------------------------------------------------------------------
-" ファイル設定関連
+" for surround.vim
+" [key map]
+" 1 : <h1>|</h1>
+" 2 : <h2>|</h2>
+" 3 : <h3>|</h3>
+" 4 : <h4>|</h4>
+" 5 : <h5>|</h5>
+" 6 : <h6>|</h6>
+"
+" p : <p>|</p>
+" u : <ul>|</ul>
+" o : <ol>|</ol>
+" l : <li>|</li>
+" a : <a href="">|</a>
+" A : <a href="|"></a>
+" i : <img src="|" alt="">
+" I : <img src="" alt="|">
+" d : <div>|</div>
+" D : <div class="section">|</div>
 
-" fileencode を設定
-set fileencoding=utf-8
+autocmd FileType html let b:surround_49  = "<h1>\r</h1>"
+autocmd FileType html let b:surround_50  = "<h2>\r</h2>"
+autocmd FileType html let b:surround_51  = "<h3>\r</h3>"
+autocmd FileType html let b:surround_52  = "<h4>\r</h4>"
+autocmd FileType html let b:surround_53  = "<h5>\r</h5>"
+autocmd FileType html let b:surround_54  = "<h6>\r</h6>"
 
-" filetype を検出
-filetype on
-
+autocmd FileType html let b:surround_112 = "<p>\r</p>"
+autocmd FileType html let b:surround_117 = "<ul>\r</ul>"
+autocmd FileType html let b:surround_111 = "<ol>\r</ol>"
+autocmd FileType html let b:surround_108 = "<li>\r</li>"
+autocmd FileType html let b:surround_97  = "<a href=\"\">\r</a>"
+autocmd FileType html let b:surround_65  = "<a href=\"\r\"></a>"
+autocmd FileType html let b:surround_105 = "<img src=\"\r\" alt=\"\">"
+autocmd FileType html let b:surround_73  = "<img src=\"\" alt=\"\r\">"
+autocmd FileType html let b:surround_100 = "<div>\r</div>"
+autocmd FileType html let b:surround_68  = "<div class=\"section\">\r</div>"
 
