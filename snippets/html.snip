@@ -1,0 +1,144 @@
+snippet sc
+	[%* --${0}-- *%]
+
+snippet scc
+	[%* ${0} *%]
+
+snippet sm
+    [%${0}%]
+
+snippet smm
+    [%$${0}%]
+
+snippet sns
+    [%sns ${0}="1"%]
+    [%/sns%]
+
+snippet sin
+    [%include file='${0}'%]
+
+snippet sif
+    [%if ${0}%]
+    [%elseif%]
+    [%else%]
+    [%/if%]
+
+snippet sifc
+    [%/if%]
+
+snippet sfor
+    [%foreach from=${0} item=%]
+    [%foreachelse%]
+    [%/foreach%]
+
+snippet stx1
+    [%#TXT1#%]
+
+snippet stx2
+    [%#TXT2#%]
+
+snippet stx3
+    [%#TXT3#%]
+
+snippet sbg1
+    [%#BOXBGCOLOR#%]
+
+snippet sbg2
+    [%#BOXBGCOLOR2#%]
+
+snippet scon
+    [%#${0}#%]
+
+snippet sfs
+    [%$BodyFontSize%]
+
+snippet ssfs
+    <span style="[%fontsize%]">${0}</span>
+
+snippet surlh
+    [%url href="${0}"%]
+
+snippet surli
+    [%url img="${0}"%]
+
+snippet sdraw
+    [%draw url="${0}"%]
+
+snippet suh
+    [%url href="${0}"%]
+
+snippet sui
+    [%url img="${0}"%]
+
+snippet sdeb
+	[%${0}|@debug_print_var%]
+
+snippet gets
+    [%'${0}'|getstr%]
+
+snippet spa
+  <div>[%space h=${0}5%]</div>
+
+
+snippet spb
+    <div><img src="[%url img="#SPACE#"%]" alt="" height="${0}5" width="1" style="border:none;" /></div>
+
+snippet spc
+    <div><img src="[%#SPACE#%]" alt="" height="${0}5" width="1" style="border:none;" /></div>
+
+snippet sty
+    style="${0}"
+
+snippet stc
+    style="color:${0};"
+
+snippet tac
+    textalign: center; 
+
+snippet bgc
+    background-color: #${0}; 
+
+snippet table
+    <table border="0" cellpadding="0" cellspacing="0" width="240">
+    ${0}
+    </table>
+
+snippet ta
+    <div style="text-align:center;"></div>
+
+snippet tab
+    <div style="text-align:center; background-color:#;"></div>
+
+snippet hr2
+    <div style="text-align:center;"><img src="[%url img='fp/line/hr2.gif'%]" alt="" /></div>
+
+snippet ld
+    <div style="text-align:center;"><img src="[%url img='fp/line/line_dot.gif'%]" alt="" /></div>
+
+snippet lt2
+    <div style="text-align:center;"><img src="[%url img='fp/box/box_lace_top2.gif'%]" alt="" /></div>
+
+snippet lb2
+    <div style="text-align:center;"><img src="[%url img='fp/box/box_lace_btm2.gif'%]" alt="" /></div>
+
+snippet bd1
+    <div style="text-align:center;"><img src="[%#BORDER1#%]" alt="" width="240" height="1" /></div>
+
+snippet bd2
+    <div style="text-align:center;"><img src="[%#BORDER2#%]" alt="" width="240" height="1" /></div>
+
+snippet box1
+    <div style="text-align:center;"><img src="[%#BOXT1#%]" alt="" width="240" height="7" /></div>
+    <div style="text-align:center;"><img src="[%#BOXB1#%]" alt="" width="240" height="9" /></div>
+
+snippet box2
+    <div style="text-align:center;"><img src="[%#BOXT2#%]" alt="" width="240" height="3" /></div>
+    <div style="text-align:center;"><img src="[%#BOXB2#%]" alt="" width="240" height="3" /></div>
+
+snippet midashi
+    [%include file='common/midashi.html' path='${0}' title=''%]
+
+snippet midashii
+    [%include file='common/midashi.html' path='' type='h2' title='${0}'%]
+
+
