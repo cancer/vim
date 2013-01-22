@@ -3,7 +3,7 @@
 " An example for a Japanese version gvimrc file.
 " 日本語版のデフォルトGUI設定ファイル(gvimrc) - Vim7用試作
 "
-" Last Change: 21-Dec-2011.
+" Last Change: 07-Nov-2012.
 " Maintainer:  MURAOKA Taro <koron.kaoriya@gmail.com>
 "
 " 解説:
@@ -69,7 +69,7 @@ endif
 "
 if has('win32')
   " Windows用
-  set guifont=MS_Gothic:h12:cSHIFTJIS
+  set guifont=MS_Gothic:h11:cDEFAULT
   "set guifont=MS_Mincho:h12:cSHIFTJIS
   " 行間隔の設定
   set linespace=1
@@ -88,23 +88,39 @@ endif
 " ウインドウに関する設定:
 "
 " ウインドウの幅
-set columns=80
+set columns=200
 " ウインドウの高さ
-set lines=25
+set lines=55
 " コマンドラインの高さ(GUI使用時)
 set cmdheight=2
-" 画面を黒地に白にする (次行の先頭の " を削除すれば有効になる)
-"colorscheme evening " (GUI使用時)
-"ウィンドウを最大化して起動
- au GUIEnter * simalt ~x
+
 " ルーラーを表示 (noruler:非表示)
 set ruler
 
+"ウィンドウを最大化
+if has("gui_running")
+  if has('mac')
+    set fuoptions=maxvert,maxhorz
+    au GUIEnter * set fullscreen
+  elseif has('win32')
+    au GUIEnter * simalt ~X
+  endif
+endif
+
+
 "-------------------------------------------------------------------------------
 " デザイン
-set antialias              " アンチエイリアシング
-set transparency=230       " 半透明
+" アンチエイリアシング
+set antialias
+
+" カラースキーマの設定
+"colorscheme evening " (GUI使用時)
 colorscheme wombat
+"colorscheme solarized
+"colorscheme desert
+"colorscheme tetragrammaton
+
+" wombatのVisualモードをdesert風(緑っぽいやつ)にする
 if g:colors_name ==? 'wombat'
   hi Visual gui=none guifg=khaki guibg=olivedrab
 endif
@@ -187,3 +203,14 @@ if has('printer')
 endif
 
 " Copyright (C) 2011 KaoriYa/MURAOKA Taro
+
+
+"---------------------------------------------------------------------------
+" ウィンドウ作成後
+
+gui
+" 半透明
+set transparency=230
+
+
+

@@ -3,7 +3,7 @@
 " An example for a Japanese version vimrc file.
 " 日本語版のデフォルト設定ファイル(vimrc) - Vim7用試作
 "
-" Last Change: 10-Jan-2012.
+" Last Change: 04-Jan-2013.
 " Maintainer:  MURAOKA Taro <koron.kaoriya@gmail.com>
 "
 " 解説:
@@ -31,9 +31,10 @@
 "   :version
 
 " $HOMEの再設定
-let $HOME = 'C:\cygwin\home\y-uno\'
+"let $HOME = 'C:\cygwin\home\y-uno\'
+let $HOME = 'C:\Users\uno_y\tools\vim\'
 " $TEMPの再設定
-let $TEMP = 'C:\cygwin\tmp\'
+"let $TEMP = 'C:\cygwin\tmp\'
 "---------------------------------------------------------------------------
 " サイトローカルな設定($VIM/vimrc_local.vim)があれば読み込む。読み込んだ後に
 " 変数g:vimrc_local_finishに非0な値が設定されていた場合には、それ以上の設定
@@ -140,7 +141,7 @@ set incsearch
 " タブの画面上での幅
 set tabstop=4
 " タブ幅
-set softtabstop=8
+set softtabstop=4
 " タブを挿入するときの幅
 set shiftwidth=4
 " タブをスペースに展開しない (expandtab:展開する)
@@ -291,8 +292,32 @@ call pathogen#runtime_append_all_bundles()
 " ヘルプコマンド
 "call pathogen#helptags()
 
+
+" NeoBundleの読み込み/設定
+"set nocompatible
+"filetype off
+"if has('vim_starting')
+"  set runtimepath+=$VIMRUNTIME/bundle/neobundle.vim-master/autoload/neobundle.vim
+"  call neobundle#rc(expand('$VIMRUNTIME/bundle/'))
+"endif
+"
+"" プロキシ環境用の設定ファイルを読み込む（リポジトリでは管理しない）
+"if filereadable($HOME . '.vimrc.local')
+"  source $HOME/.vimrc.local
+"endif
+"
+"" originalrepos on github
+"NeoBundle 'Shougo/neobundle.vim'
+"NeoBundle 'Shougo/neocomplcache'
+"NeoBundle 'Shougo/neocomplcache-snippets-complete'
+"
+"filetype plugin indent on     " required!
+"filetype indent on
+"syntax on
+
 "---------------------------------------------------------------------------
 " キーマッピング
+nnoremap ZZ <Nop>
 
 nnoremap j gj
 nnoremap k gk
@@ -300,6 +325,8 @@ nnoremap gj j
 nnoremap gk k
 nnoremap <C-Up> 5k
 nnoremap <C-Down> 5j
+
+inoremap <C-z> <Esc>
 
 "noremap <S-Up> v<Up>
 "noremap <S-Down> v<Down>
@@ -325,6 +352,10 @@ nnoremap <C-Down> 5j
 " open new tab
 nnoremap <c-n> :<c-u>tabnew<cr>
 
+" change buffer
+nnoremap gb :<C-u>bn<CR>
+nnoremap gB :<C-u>bp<CR>
+nnoremap cb :<C-u>bd<CR>
 
 "Fuf setting
 nnoremap <silent> <space>fb :FufBuffer!<CR>
@@ -342,6 +373,92 @@ let g:fuf_file_exclude = '\v\.DS_Store|\.git|\.swp|\.svn'
 
 " zencoding setting 
 let g:user_zen_expandabbr_key = '<C-d>'
+let g:user_zen_settings = {
+\  'html' : {
+\    'snippets' : {
+\     'img:sp' : "<img src=\"[%url img=\"#SPACE#\"%]\" alt=\"\" width=\"1\" height=\"|\" style=\"border:none;\" />",
+\    },
+\  },
+\}
+
+" ---------------------------------------------------------------------------
+" neocomplcache setting 
+
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+
+" enable neocomplcache
+let g:neocomplcache_enable_at_startup = 1
+
+" Set minimum syntax keyword length.
+let g:neocomplcache_min_syntax_length = 3
+"let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+
+" Plugin key-mappings.
+"imap <C-k>     <Plug>(neocomplcache_snippets_expand)
+"smap <C-k>     <Plug>(neocomplcache_snippets_expand)
+inoremap <expr><C-g>     neocomplcache#undo_completion()
+inoremap <expr><C-l>     neocomplcache#complete_common_string()
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <expr><CR>  neocomplcache#close_popup() . "\<CR>"
+" <TAB>: completion.
+"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplcache#close_popup()
+inoremap <expr><C-e>  neocomplcache#cancel_popup()
+
+" For cursor moving in insert mode(Not recommended)
+inoremap <expr><Left>  neocomplcache#close_popup() . "\<Left>"
+inoremap <expr><Right> neocomplcache#close_popup() . "\<Right>"
+inoremap <expr><Up>    neocomplcache#close_popup() . "\<Up>"
+inoremap <expr><Down>  neocomplcache#close_popup() . "\<Down>"
+
+" AutoComplPop like behavior.
+let g:neocomplcache_enable_auto_select = 1
+
+" Shell like behavior(not recommended).
+"set completeopt+=longest
+"let g:neocomplcache_enable_auto_select = 1
+"let g:neocomplcache_disable_auto_complete = 1
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+"inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" Enable heavy omni completion.
+if !exists('g:neocomplcache_omni_patterns')
+  let g:neocomplcache_omni_patterns = {}
+endif
+"let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
+"autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+"let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+"let g:neocomplcache_omni_patterns.c = '\%(\.\|->\)\h\w*'
+"let g:neocomplcache_omni_patterns.cpp = '\h\w*\%(\.\|->\)\h\w*\|\h\w*::'
+
+" Enable jscomplete-vim
+autocmd FileType javascript setlocal omnifunc=jscomplete#CompleteJS
+let g:jscomplete_use = ['dom']
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+
+
 " ---------------------------------------------------------------------------
 " 編集関連
 
@@ -363,6 +480,25 @@ autocmd InsertEnter * highlight StatusLine guifg=#ccdc90 guibg=#2E4340
 autocmd InsertLeave * highlight StatusLine guifg=#2E4340 guibg=#ccdc90
 augroup END
 
+" ステータスラインに文字コードと改行文字を表示する
+" set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
+set statusline=%{expand('%:p:t')}\ %<\(%{SnipMid(expand('%:p:h'),80-len(expand('%:p:t')),'...')}\)%=\ %m%r%y%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}[%3l,%3c]%8P
+
+" FuzzyFinderから長いパスの中間を省略する関数をパクって最適化する
+" http://hail2u.net/blog/software/optimize-vim-statusline.html
+function! SnipMid(str, len, mask)
+  if a:len >= len(a:str)
+    return a:str
+  elseif a:len <= len(a:mask)
+    return a:mask
+  endif
+
+  let len_head = (a:len - len(a:mask)) / 2
+  let len_tail = a:len - len(a:mask) - len_head
+
+  return (len_head > 0 ? a:str[: len_head - 1] : '') . a:mask . (len_tail > 0 ? a:str[-len_tail :] : '')
+endfunction
+
 "---------------------------------------------------------------------------
 " ファイル設定関連
 
@@ -370,7 +506,21 @@ augroup END
 filetype on
 
 " fileencode を設定
-set fileencoding=utf-8
+set fileencodings=utf-8,euc-jp,sjis,cp932
+
+" Smartyのsyntax-highlightを有効にする(したい)
+"augroup filetypedetect
+"    autocmd! BufNewFile,BufRead *.html setfiletype html
+"    autocmd! BufNewFile,BufRead *.html setfiletype smarty
+"augroup END
+
+" Smarty.vim delimiter setting
+"syn region smartyZone matchgroup=Delimiter start="\[%" end="%\]" contains=smartyProperty, smartyString, smartyBlock, smartyTagName, smartyConstant, smartyInFunc, smartyModifier
+
+au BufNewFile,BufRead *.md setfiletype markdown
+"augroup filetypedetect
+"    autocmd! BufNewFile,BufRead *.md setfiletype markdown
+"augroup END
 
 "---------------------------------------------------------------------------
 " vimrcを良い感じに開く
@@ -402,6 +552,11 @@ function! SourceIfExists(file)
 endfunction
 nnoremap <F5> <Esc>:<C-u>source $MYVIMRC<CR> :source $MYGVIMRC<CR> :call SourceIfExists($FTPLUGIN .'\'. &filetype . '.vim')<CR>
 
+" Map double-tap Esc to clear search highlights
+nnoremap <silent> <Esc><Esc> <Esc>:nohlsearch<CR><Esc>
+
+" vimgrepで自動的にQuickFixを開く
+"au QuickFixCmdPost vimgrep cw
 "---------------------------------------------------------------------------
 " for surround.vim
 " [key map]
@@ -441,3 +596,14 @@ autocmd FileType html let b:surround_73  = "<img src=\"\" alt=\"\r\">"
 autocmd FileType html let b:surround_100 = "<div>\r</div>"
 autocmd FileType html let b:surround_68  = "<div class=\"section\">\r</div>"
 
+"---------------------------------------------------------------------------
+" quickhl 設定
+"nmap <Space>m <Plug>(quickhl-toggle)
+"xmap <Space>m <Plug>(quickhl-toggle)
+"nmap <Space>M <Plug>(quickhl-reset)
+"xmap <Space>M <Plug>(quickhl-reset)
+"nmap <Space>j <Plug>(quickhl-match)
+"
+"let g:quickhl_keywords = [
+"    \ "\[%(.*)%\]",
+"    \ ]
